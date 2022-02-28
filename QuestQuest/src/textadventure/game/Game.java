@@ -149,10 +149,6 @@ public class Game{
         String printString = "Moving ";
         String thingToMove = null;
         
-        countUno = (countUno + 1) % 9;
-        countDos = (countDos + 1) % 9;
-        countTres = (countTres + 1) % 9;
-        
         
         Item combatSigil = new Item("CombatSigil", "A golden cylinder with white marble like stone, and a red gem at one end. It looks like it can be inserted somewhere familiar.");
         Item sorcerySigil = new Item("SorcerySigil", "A golden cylinder with white marble like stone, and a red gem at one end. It looks like it can be inserted somewhere familiar.");
@@ -178,14 +174,23 @@ public class Game{
         if(command.getSecondWord().equals("counterOne")){
             countUno = (countUno + 1) % 9;
             System.out.println("You move the first counter. The stone shows: " + countUno);
+            System.out.println("CounterOne: " + countUno);
+            System.out.println("CounterOne: " + countDos);
+            System.out.println("CounterOne: " + countTres);
         }
         else if(command.getSecondWord().equals("counterTwo")){
             countDos = (countDos + 1) % 9;
             System.out.println("You move the second counter. The stone shows" + countDos);
+            System.out.println("CounterOne: " + countUno);
+            System.out.println("CounterOne: " + countDos);
+            System.out.println("CounterOne: " + countTres);
         }
         else if(command.getSecondWord().equals("counterThree")){
             countTres = (countTres + 1) % 9;
             System.out.println("You move the third counter. The stone shows" + countTres);
+            System.out.println("CounterOne: " + countUno);
+            System.out.println("CounterOne: " + countDos);
+            System.out.println("CounterOne: " + countTres);
             
         if (countUno == 8 && countDos == 0 && countTres == 8) {
         	System.out.println("The wall opens, a small pillar holding a Sigil stands. You grab the sigil");
