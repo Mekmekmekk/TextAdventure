@@ -57,6 +57,19 @@ public class Game{
         Item counterTwo = new Item("counterTwo", "A old tablet that rolls to numbers between 1 to 9");
         Item counterThree = new Item("counterThree", "A old tablet that rolls to numbers between 1 to 9");
         
+        Item booka = new Item("combatTactics" ,"Upon further inspection, nothing is off about the book.");
+        Item bookb = new Item("loveAndLoss", "Just a normal Romance novel... Nope wait.. Its a key.. (Use 'move' on this)");
+        Item bookc = new Item("arcaneAndYou","Just a beginners guide to magic.");
+        Item bookd = new Item("howT----", "You look at the book closer, it says how to be the best bard.");
+        Item booke = new Item("ho------", "The books name is scratched out, you read the book. Its just says horses over and over.");
+        Item bookf = new Item("iAmASecretKey", "Its a hollowed out book, inside is a spider family. They wave to you, and you return them back to their spot in the bookshelf.");
+        Item bookg = new Item("killerGreens", "A book on what plants can and will kill you.");
+        
+        Room paintingOne = new Room("paintingOne", "A painting... I think", "A painting of a war, a war of dragons vs the combined power of Humans, Orcs, Elves, all you can imagine. The year is stamped 472 Common Era.");
+        Room paintingTwo = new Room("paintingTwo", "A painting... I think", "A painting of a an abstract, but important point in time for Emon. The birth of magic, the first spell caster to introduce the lands to magic. Was this a good thing? The year is stamped 23 Common Era.");
+        Room paintingThree = new Room("paintingThree", "A painting... I think", "A painting of a diplomat, a very large and stoic looking man. Seems to be a General, considered a hero. The year is stamped 531 Common Era.");
+        
+        
         
         entrance.setExit("crossroads", crossRoads);
         crossRoads.setExit("entrance", entrance);
@@ -79,6 +92,15 @@ public class Game{
         sorceryBranch.setItem("counterOne", counterOne);
         sorceryBranch.setItem("counterTwo", counterTwo);
         sorceryBranch.setItem("counterThree", counterThree);
+        
+        historyBranch.setItem("combatTactics", booka);
+        historyBranch.setItem("loveAndLoss", bookb);
+        historyBranch.setItem("arcaneAndYou", bookc);
+        historyBranch.setItem("howT----", bookd);
+        historyBranch.setItem("ho----", booke);
+        historyBranch.setItem("iAmASecretKey", bookf);
+        historyBranch.setItem("killerGreens", bookg);
+
         
         crossRoads.setItem("fountain", fountain);
         try{
@@ -139,8 +161,24 @@ public class Game{
                 move(command);
                 break;
             case"help":
-               System.out.println("The available commands are: go, grab, drop, inspect, move");
+               System.out.println("The available commands are: go, grab, drop, inspect, move. Type 'help' and a command for more info");
                 break;
+            case"help go":
+            	System.out.println("You go to a room. This room must be listed as an exit in your current room.");
+            	break;
+            case"help grab":
+            	System.out.println("You grab an item, and the item will go into your inventory. This item must be in your current room.");
+            	break;
+            case"help drop":
+            	System.out.println("You drop an item that is currently in your inventory. This will put said item in your current room and leave it there.");
+            	break;
+            case"help inspect":
+            	System.out.println("You inspect an object, getting a more detailed description on the item. These are most likely hints to the puzzle.");
+            	break;
+            case"help move":
+            	System.out.println("Moving is different from go. To move is to move an object, changing it in a way. This is your main action to solving puzzles.");
+            	break;
+            	
         }
     }
     
@@ -166,9 +204,12 @@ public class Game{
         else if(command.hasLine()){
             thingToMove = command.getSecondWord()+command.getLine();
         }
+        
+        
+        
         if(command.getSecondWord().equals("swordFour")){
             player.setItem("CombatSigil", combatSigil);
-            System.out.println("The Table opens wide, and a item rises from the center. The Combat Sigil. Key 1/3");
+            System.out.println("The Table opens wide, and a item rises from the center. The Combat Sigil. Key 1/4");
         }
         
         if(command.getSecondWord().equals("counterOne")){
@@ -193,12 +234,16 @@ public class Game{
             System.out.println("CounterOne: " + countTres);
             
         if (countUno == 8 && countDos == 0 && countTres == 8) {
-        	System.out.println("The wall opens, a small pillar holding a Sigil stands. You grab the sigil");
+        	System.out.println("The wall opens, a small pillar holding a Sigil stands. You grab the sigil. Sorcery Sigil. Key 2/4");
         	player.setItem("SorcerySigil", sorcerySigil);
         }
-            
-        
+        	
+        if(thingToMove.equals("loveAndLoss")) {
+        	player.setItem("HistorySigil", historySigil);
+        	System.out.println("You mess with the book, the next sigil appears out of the book with a spell, and a riddle comes out with it. The History Sigil. Key 3/4");
+        }    
         }
+        
         
     }
     

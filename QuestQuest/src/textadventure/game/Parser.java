@@ -25,11 +25,14 @@ package textadventure.game;
 	            word1 = tokenizer.next();
 	            if(tokenizer.hasNext()){
 	                word2 = tokenizer.next();
+	                	if(tokenizer.hasNext()){
+	                		line = tokenizer.nextLine();
+	                }
+	                
 	            }
-	        }
-	            if(tokenizer.hasNext()){
-	                line = tokenizer.nextLine();
 	            }
+	        
+	            
 	        
 	        return new Command(word1, word2, line);
 	        
