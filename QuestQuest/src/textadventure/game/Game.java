@@ -3,6 +3,7 @@ package textadventure.game;
 public class Game{
     private Parser parser;
     private Room currentRoom;
+    private Room secretTreasury;
     private Player player;
     private CLS cls_var;
     
@@ -41,7 +42,7 @@ public class Game{
         Room combatBranch = new Room("combatbranch","You enter the Combat Branch.", "A room full of weapons. It has every weapon you could think of, and each made of a variety of materials. At the center stands a round table with text and statues of knights holding swords.");
         Room sorceryBranch = new Room("sorcerybranch","You enter the Sorcery Branch.", "A room lined with bookshelves, shelves with potions and materials");
         Room historyBranch = new Room("historybranch","You enter the History Branch.", "Long");
-        Room secretTreasury = new Room("treasury","You enter the a Secret Treasury.", "Long");
+        secretTreasury = new Room("treasury","You enter the a Secret Treasury.", "Long");
         
         Item fountain = new Item("fountain", "A crystal fountain, water still, the crystal lays illuminated. There are slots on the fountain");
         
@@ -53,9 +54,11 @@ public class Game{
         Item swordSix = new Item("swordSix", "A grand longsword");
         Item tableText = new Item("tabletext", "'The tables of old, the Knights of Clover. The luckiest knights of all.'");
         
+        Item sorceryRiddle = new Item("riddleS", "The beginning age of all mages, a *year of arcane sparks around the world*. Soon igniting a flame.");
         Item counterOne = new Item("counterOne", "A old tablet that rolls to numbers between 1 to 9");
         Item counterTwo = new Item("counterTwo", "A old tablet that rolls to numbers between 1 to 9");
         Item counterThree = new Item("counterThree", "A old tablet that rolls to numbers between 1 to 9");
+        
         
         Item booka = new Item("combatTactics" ,"Upon further inspection, nothing is off about the book.");
         Item bookb = new Item("loveAndLoss", "Just a normal Romance novel... Nope wait.. Its a key.. (Use 'move' on this)");
@@ -65,11 +68,15 @@ public class Game{
         Item bookf = new Item("iAmASecretKey", "Its a hollowed out book, inside is a spider family. They wave to you, and you return them back to their spot in the bookshelf.");
         Item bookg = new Item("killerGreens", "A book on what plants can and will kill you.");
         
-        Room paintingOne = new Room("paintingOne", "A painting... I think", "A painting of a war, a war of dragons vs the combined power of Humans, Orcs, Elves, all you can imagine. The year is stamped 472 Common Era.");
-        Room paintingTwo = new Room("paintingTwo", "A painting... I think", "A painting of a an abstract, but important point in time for Emon. The birth of magic, the first spell caster to introduce the lands to magic. Was this a good thing? The year is stamped 23 Common Era.");
-        Room paintingThree = new Room("paintingThree", "A painting... I think", "A painting of a diplomat, a very large and stoic looking man. Seems to be a General, considered a hero. The year is stamped 531 Common Era.");
+        Room paintingUno = new Room("paintingOne", "A painting... I think", "A painting of a war, a war of dragons vs the combined power of Humans, Orcs, Elves, all you can imagine. The year is stamped 472 Common Era.");
+        Room paintingDos = new Room("paintingTwo", "A painting... I think", "A painting of a an abstract, but important point in time for Emon. The birth of magic, the first spell caster to introduce the lands to magic. Was this a good thing? The year is stamped 23 Common Era.");
+        Room paintingTres = new Room("paintingThree", "A painting... I think", "A painting of a diplomat, a very large and stoic looking man. Seems to be a General, considered a hero. The year is stamped 531 Common Era.");
         
+        Item paintingOne = new Item("firstpainting", "A painting of a war, a war of dragons vs the combined power of Humans, Orcs, Elves, all you can imagine. The year is stamped 472 Common Era.");
+        Item paintingTwo = new Item("secondpainting", "A painting of a an abstract, but important point in time for Emon. The birth of magic, the first spell caster to introduce the lands to magic. Was this a good thing? The year is stamped 808 Common Era.");
+        Item paintingThree = new Item("thirdpainting", "A painting of a diplomat, a very large and stoic looking man. Seems to be a General, considered a hero. The year is stamped 531 Common Era.");
         
+        Item chest = new Item("chest", "A locked chest, if only I had something that could open it.");
         
         entrance.setExit("crossroads", crossRoads);
         crossRoads.setExit("entrance", entrance);
@@ -89,6 +96,7 @@ public class Game{
         combatBranch.setItem("swordSix", swordSix);
         combatBranch.setItem("tabletext", tableText);
         
+        sorceryBranch.setItem("riddleS", sorceryRiddle);
         sorceryBranch.setItem("counterOne", counterOne);
         sorceryBranch.setItem("counterTwo", counterTwo);
         sorceryBranch.setItem("counterThree", counterThree);
@@ -126,21 +134,22 @@ public class Game{
         }
     
         public void play() {
-        while(true) {            
+        	boolean gameRun = true;
+        while(gameRun) {            
         Command command = parser.getCommand(); 
         try {
             cls_var.main(); 
         }catch(Exception e) {
             System.out.println(e); 
         }
-        processCommand(command);
+        gameRun = processCommand(command);
         printInformation();   
         }
     }
     
-    public void processCommand(Command command){
+    public boolean processCommand(Command command){
         String commandWord = command.getCommandWord().toLowerCase();
-        
+        boolean returnValue = true;
         switch(commandWord) {
             case"speak":
                 System.out.println("you wanted me to speak " + command.getSecondWord());
@@ -178,11 +187,20 @@ public class Game{
             case"help move":
             	System.out.println("Moving is different from go. To move is to move an object, changing it in a way. This is your main action to solving puzzles.");
             	break;
+            case "death":
+            	returnValue = killMe(); 
+            case"move firstpainting":
+            	killMe();
+            case"move secondpainting":
+            	killMe();
             	
         }
+        return returnValue;
     }
     
-    
+    public boolean killMe () {
+    	return false; 
+    }
     public void move(Command command){
         String printString = "Moving ";
         String thingToMove = null;
@@ -232,6 +250,7 @@ public class Game{
             System.out.println("CounterOne: " + countUno);
             System.out.println("CounterOne: " + countDos);
             System.out.println("CounterOne: " + countTres);
+        }
             
         if (countUno == 8 && countDos == 0 && countTres == 8) {
         	System.out.println("The wall opens, a small pillar holding a Sigil stands. You grab the sigil. Sorcery Sigil. Key 2/4");
@@ -242,10 +261,14 @@ public class Game{
         	player.setItem("HistorySigil", historySigil);
         	System.out.println("You mess with the book, the next sigil appears out of the book with a spell, and a riddle comes out with it. The History Sigil. Key 3/4");
         }    
+        
+        if(thingToMove.equals("thirdpainting")) {
+        	currentRoom = secretTreasury;
+        	return;
+        }
         }
         
         
-    }
     
     
     public void inspect(Command command){
