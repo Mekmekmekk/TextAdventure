@@ -12,6 +12,8 @@ public class Game{
     int countTres;
     int code;
     
+    boolean gameRun;
+    
     public Game(){
         parser = new Parser();
         player = new Player();
@@ -68,15 +70,12 @@ public class Game{
         Item bookf = new Item("iAmASecretKey", "Its a hollowed out book, inside is a spider family. They wave to you, and you return them back to their spot in the bookshelf.");
         Item bookg = new Item("killerGreens", "A book on what plants can and will kill you.");
         
-        Room paintingUno = new Room("paintingOne", "A painting... I think", "A painting of a war, a war of dragons vs the combined power of Humans, Orcs, Elves, all you can imagine. The year is stamped 472 Common Era.");
-        Room paintingDos = new Room("paintingTwo", "A painting... I think", "A painting of a an abstract, but important point in time for Emon. The birth of magic, the first spell caster to introduce the lands to magic. Was this a good thing? The year is stamped 23 Common Era.");
-        Room paintingTres = new Room("paintingThree", "A painting... I think", "A painting of a diplomat, a very large and stoic looking man. Seems to be a General, considered a hero. The year is stamped 531 Common Era.");
-        
         Item paintingOne = new Item("firstpainting", "A painting of a war, a war of dragons vs the combined power of Humans, Orcs, Elves, all you can imagine. The year is stamped 472 Common Era.");
         Item paintingTwo = new Item("secondpainting", "A painting of a an abstract, but important point in time for Emon. The birth of magic, the first spell caster to introduce the lands to magic. Was this a good thing? The year is stamped 808 Common Era.");
         Item paintingThree = new Item("thirdpainting", "A painting of a diplomat, a very large and stoic looking man. Seems to be a General, considered a hero. The year is stamped 531 Common Era.");
         
         Item chest = new Item("chest", "A locked chest, if only I had something that could open it.");
+        
         
         entrance.setExit("crossroads", crossRoads);
         crossRoads.setExit("entrance", entrance);
@@ -108,6 +107,11 @@ public class Game{
         historyBranch.setItem("ho----", booke);
         historyBranch.setItem("iAmASecretKey", bookf);
         historyBranch.setItem("killerGreens", bookg);
+        historyBranch.setItem("firstpainting", paintingOne);
+        historyBranch.setItem("secondpainting", paintingTwo);
+        historyBranch.setItem("thirdpainting", paintingThree);
+        
+        secretTreasury.setItem("chest", chest);
 
         
         crossRoads.setItem("fountain", fountain);
@@ -119,14 +123,14 @@ public class Game{
         
         
         currentRoom = entrance;        
-        System.out.println("████████▄   ███    █▄     ▄████████    ▄████████     ███      ████████▄   ███    █▄     ▄████████    ▄████████     ███     ");
-        System.out.println("███    ███  ███    ███   ███    ███   ███    ███ ▀█████████▄  ███    ███  ███    ███   ███    ███   ███    ███  ▀█████████▄ ");
+        System.out.println("████████▄   ███    █▄     ▄████████    ▄████████     ███       ████████▄   ███    █▄     ▄████████    ▄████████     ███     ");
+        System.out.println("███    ███  ███    ███   ███    ███   ███    ███ ▀█████████▄   ███    ███  ███    ███   ███    ███   ███    ███  ▀█████████▄ ");
         System.out.println("███    ███  ███    ███   ███    █▀    ███    █▀     ▀███▀▀██   ███    ███  ███    ███   ███    █▀    ███    █▀      ▀███▀▀██ ");
         System.out.println("███    ███  ███    ███  ▄███▄▄▄       ███            ███   ▀   ███    ███  ███    ███  ▄███▄▄▄       ███             ███   ▀ ");
-        System.out.println("███    ███  ███    ███ ▀▀███▀▀▀     ▀███████████   ███       ███    ███  ███    ███ ▀▀███▀▀▀     ▀██████████      ███     ");
-        System.out.println("███    ███  ███    ███   ███    █▄             ███   ███       ███    ███  ███    ███   ███    █▄           ███       ███     ");
-        System.out.println("███  ▀ ███  ███    ███   ███    ███    ▄█     ███   ███       ███  ▀ ███  ███    ███   ███    ███    ▄█    ███       ███     ");
-        System.out.println(" ▀██████▀▄█ ████████▀    ██████████  ▄████████▀▄████▀      ▀██████▀▄█ ████████▀   ██████████ ▄████████▀     ▄████▀   ");
+        System.out.println("███    ███  ███    ███ ▀▀███▀▀▀     ▀███████████     ███       ███    ███  ███    ███ ▀▀███▀▀▀     ▀██████████       ███     ");
+        System.out.println("███    ███  ███    ███   ███    █▄            ███    ███       ███    ███  ███    ███   ███    █▄           ███      ███     ");
+        System.out.println("███  ▀ ███  ███    ███   ███    ███   ▄█      ███    ███       ███  ▀ ███  ███    ███   ███    ███    ▄█    ███      ███     ");
+        System.out.println(" ▀██████▀▄█ ████████▀    ██████████  ▄████████▀   ▄████▀        ▀██████▀▄█ ████████▀    ██████████  ▄████████▀    ▄████▀   ");
         System.out.println("type 'play'  to start");
         
         play();
@@ -134,7 +138,7 @@ public class Game{
         }
     
         public void play() {
-        	boolean gameRun = true;
+        	gameRun = true;
         while(gameRun) {            
         Command command = parser.getCommand(); 
         try {
@@ -189,17 +193,22 @@ public class Game{
             	break;
             case "death":
             	returnValue = killMe(); 
+            	break;
             case"move firstpainting":
             	killMe();
+            	break;
             case"move secondpainting":
             	killMe();
+            	break;
             	
         }
         return returnValue;
     }
     
-    public boolean killMe () {
-    	return false; 
+    public boolean killMe() {
+    	System.out.print("You have deaded.");
+    	return gameRun = false; 
+    	
     }
     public void move(Command command){
         String printString = "Moving ";
@@ -266,8 +275,15 @@ public class Game{
         	currentRoom = secretTreasury;
         	return;
         }
-        }
+        if(thingToMove.equals("firstpainting")) {
+        	killMe();
         
+        }
+        if(thingToMove.equals("secondpainting")) {
+        	killMe();
+        	
+        }
+    }
         
     
     
