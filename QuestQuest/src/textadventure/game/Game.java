@@ -6,6 +6,7 @@ public class Game{
     private Room secretTreasury;
     private Player player;
     private CLS cls_var;
+    private Room crossRoads;
     
     int countUno;
     int countDos;
@@ -40,7 +41,7 @@ public class Game{
     
     public void setupGame(){
         Room entrance = new Room("entrance", "You are in the entrance.", "The entrance of the libray, There are cobwebs and dust everywhere.");
-        Room crossRoads = new Room("crossroads","You enter the Cross Roads.", "The Crossroads, There is a crystal fountain in the center. The fountain has still water, and the crystal is dull and not illuminating.");
+        crossRoads = new Room("crossroads","You enter the Cross Roads.", "The Crossroads, There is a crystal fountain in the center. The fountain has still water, and the crystal is dull and not illuminating.");
         Room combatBranch = new Room("combatbranch","You enter the Combat Branch.", "A room full of weapons. It has every weapon you could think of, and each made of a variety of materials. At the center stands a round table with text and statues of knights holding swords.");
         Room sorceryBranch = new Room("sorcerybranch","You enter the Sorcery Branch.", "A room lined with bookshelves, shelves with potions and materials");
         Room historyBranch = new Room("historybranch","You enter the History Branch.", "Long");
@@ -74,7 +75,9 @@ public class Game{
         Item paintingTwo = new Item("secondpainting", "A painting of a an abstract, but important point in time for Emon. The birth of magic, the first spell caster to introduce the lands to magic. Was this a good thing? The year is stamped 808 Common Era.");
         Item paintingThree = new Item("thirdpainting", "A painting of a diplomat, a very large and stoic looking man. Seems to be a General, considered a hero. The year is stamped 531 Common Era.");
         
-        Item chest = new Item("chest", "A locked chest, if only I had something that could open it.");
+        Item chest = new Item("chest", "A chest... sick.");
+        
+        Item button = new Item("button", "It's a button to be pressed once you have all the sigils.");
         
         
         entrance.setExit("crossroads", crossRoads);
@@ -86,6 +89,8 @@ public class Game{
         sorceryBranch.setExit("crossroads", crossRoads);
         historyBranch.setExit("crossroads", crossRoads);
         secretTreasury.setExit("historybranch", historyBranch);
+        
+        crossRoads.setItem("button", button);
         
         combatBranch.setItem("swordOne", swordOne);
         combatBranch.setItem("swordTwo", swordTwo);
@@ -131,9 +136,7 @@ public class Game{
         System.out.println("███    ███  ███    ███   ███    █▄            ███    ███       ███    ███  ███    ███   ███    █▄           ███      ███     ");
         System.out.println("███  ▀ ███  ███    ███   ███    ███   ▄█      ███    ███       ███  ▀ ███  ███    ███   ███    ███    ▄█    ███      ███     ");
         System.out.println(" ▀██████▀▄█ ████████▀    ██████████  ▄████████▀   ▄████▀        ▀██████▀▄█ ████████▀    ██████████  ▄████████▀    ▄████▀   ");
-        System.out.println("type 'play'  to start");
-        
-        play();
+        //play();
         printInformation();
         }
     
@@ -146,14 +149,16 @@ public class Game{
         }catch(Exception e) {
             System.out.println(e); 
         }
-        gameRun = processCommand(command);
-        printInformation();   
+        processCommand(command);
+        if(gameRun == true) {
+        	printInformation();   
+        }
         }
     }
     
-    public boolean processCommand(Command command){
+    public void processCommand(Command command){
         String commandWord = command.getCommandWord().toLowerCase();
-        boolean returnValue = true;
+        //boolean returnValue = true;
         switch(commandWord) {
             case"speak":
                 System.out.println("you wanted me to speak " + command.getSecondWord());
@@ -191,25 +196,44 @@ public class Game{
             case"help move":
             	System.out.println("Moving is different from go. To move is to move an object, changing it in a way. This is your main action to solving puzzles.");
             	break;
-            case "death":
-            	returnValue = killMe(); 
-            	break;
             case"move firstpainting":
             	killMe();
             	break;
             case"move secondpainting":
             	killMe();
             	break;
+            case"move button":
+            	//winCheck();
+            	break;
             	
         }
-        return returnValue;
+        //return returnValue;
     }
     
-    public boolean killMe() {
-    	System.out.print("You have deaded.");
-    	return gameRun = false; 
+    public void killMe() {
+    	System.out.print(" _______  _______  __   __  _______    _______  __   __  _______  ______         \r\n"
+    			+ "");
+    	System.out.print("|       ||   _   ||  |_|  ||       |  |       ||  | |  ||       ||    _ |        \r\n"
+    			+ "");
+    	System.out.print("|    ___||  |_|  ||       ||    ___|  |   _   ||  |_|  ||    ___||   | ||        \r\n"
+    			+ "");
+    	System.out.print("|   | __ |       ||       ||   |___   |  | |  ||       ||   |___ |   |_||_       \r\n"
+    			+ "");
+    	System.out.print("|   ||  ||       ||       ||    ___|  |  |_|  ||       ||    ___||    __  | ___  \r\n"
+    			+ "");
+    	System.out.print("|   |_| ||   _   || ||_|| ||   |___   |       | |     | |   |___ |   |  | ||   | \r\n"
+    			+ "");
+    	System.out.print("|_______||__| |__||_|   |_||_______|  |_______|  |___|  |_______||___|  |_||___| "); 
     	
+    	gameRun = false; 
     }
+    public void winDub() {
+    	gameRun = false; 
+    }
+    public void winCheck(Command command) {
+    	//make a key check that all 4 sigils are in player inventory to press the button and finish the game, without sigils and pressing button results in game over.
+    }
+    
     public void move(Command command){
         String printString = "Moving ";
         String thingToMove = null;
@@ -390,6 +414,25 @@ public class Game{
         
         printInformation();
         System.out.println("Don't forget to inspect for clues");
+        if(player.getItem("CombatSigil")!=null && player.getItem("SorcerySigil")!=null && player.getItem("HistorySigil")!=null && player.getItem("TreasurySigil")!=null ) {
+        	System.out.println("Get to the crossroads to win!");
+        	if(nextRoom.equals(crossRoads) && player.getItem("CombatSigil")!=null && player.getItem("SorcerySigil")!=null && player.getItem("HistorySigil")!=null && player.getItem("TreasurySigil")!=null ) {
+        	System.out.println(" __   __  _______  __   __    _     _  ___   __    _  __  \r\n"
+        			+ "");
+        	System.out.println("|  | |  ||       ||  | |  |  | | _ | ||   | |  |  | ||  | \r\n"
+        			+ "");
+        	System.out.println("|  |_|  ||   _   ||  | |  |  | || || ||   | |   |_| ||  | \r\n"
+        			+ "");
+        	System.out.println("|       ||  | |  ||  |_|  |  |       ||   | |       ||  | \r\n"
+        			+ "");
+        	System.out.println("|_     _||  |_|  ||       |  |       ||   | |  _    ||__| \r\n"
+        			+ "");
+        	System.out.println("  |   |  |       ||       |  |   _   ||   | | | |   | __  \r\n"
+        			+ "");
+        	System.out.println("  |___|  |_______||_______|  |__| |__||___| |_|  |__||__| ");
+        	winDub();
+        	}
+        }
     }
 
 }
